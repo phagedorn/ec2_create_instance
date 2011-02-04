@@ -10,13 +10,13 @@ Why create EC2 instances with scripts? Why not just use Snapshots? Several reaso
 * The script can be referenced later as a reminder of how to install things
 * No Snapshot storage fees!
 
-## Be sure to read the comments in both scripts!!!
+__Be sure to read the comments in both scripts!!!__
 
-The main script is instance_create_and_setup.sh. It relies on three things:
+The main script is instance_create_and_setup.sh. Three command line parameters are required:
 
-* A file in your ~/.ec2 directory named "ip_address" which is a one-line text file containing a EC2 Static IP Address.
-* An environment variable – EC2_INSTANCE_KEY – whose value is the name of the EC2 keypair you want to use to log into your instance. A file by the same name (and with a .pem extension) should be in your ~/.ec2 directory.
-* A instance_installs.sh script (covered in detail later)
+* -a or --address, which is the AWS EC2 Static IP Address to be assigned to the new instance.
+* -k or --key, which is the name of the AWS EC2 Keypair to use for this instance. A file by the same name (and with a .pem extension) should be in your ~/.ec2 directory.
+* -s or --script, which is the name of a script that should be run after the instance is created.
 
 The instance_create_and_setup.sh script:
 
@@ -26,28 +26,24 @@ The instance_create_and_setup.sh script:
 * Removes the entry in known_hosts for the IP Address (since the server signature has changed and the entry is no longer valid)
 * ssh'es into the new instance
 
-instance_installs.sh is the script that is passed to the new instance after it is created (using the --user-data-file parameter of ec2-run-instances). This script can be custome-tailored to your liking, but my version:
+The install script passed in to the script is passed to the EC2 instance using the --user-data-file parameter, and can perform many useful tasks, such as:
 
-* Creates two directories ("src" and "tmp") in the ubunter user's home directory
-* Uses aptitude to install the following packages:
+* Creating directories (like "src" and "tmp") in a given user's home directory
+* Usng a package installer to install needed packages, like:
 ** git
 ** gcc
 ** build-essential
 ** libncurses5-dev
 ** openssl (actually, I don't think this one is needed)
 ** libssl-dev
-* Installs nodeJS from source (github)
-* Installs Erlang from source (erlang.org)
-* Installs Riak from source (basho.com)
-* Starts the riak service
+* Installing tools like nodeJS, Erlang, or Riak from source (github, or erlang.org, basho.com respectively)
+* Starting services
 
-Even though you can SSH into the instance within a few seconds of running these scripts, the full install will not be complete for a while. I usually test the install by running the following commands:
+Even though you can SSH into the instance within a few seconds of running these scripts, the full install will not be complete for a while. I usually test the install by running commands that would prove the appropriate installs have been completed. Examples:
 
 * node -v
 * erl (once the Erlang shell comes up enter "init:stop()." to exit)
 * curl -v http://localhost:8098/riak?buckets=true
 
 The node command should display the version of node installed. The erl command should pop you into the Erlang interactive shell. The curl command should reply with an HTTP 200 (OK) message.
-
-If all three of those happen, you're good to go!
 

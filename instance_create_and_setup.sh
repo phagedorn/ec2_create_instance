@@ -4,17 +4,62 @@
 #ec2-authorize default -P icmp -t -1:-1 -s 0.0.0.0/0
 #ec2-authorize default -P tcp -p 22 -s 0.0.0.0/0
 
-# The Static IP Address for this instance:
-IP_ADDRESS=$(cat ~/.ec2/ip_address)
+# function to display help information
+function usage
+{
+  echo
+  echo "instance_create_and_setup.sh spools up a new ec2 instance"
+  echo
+  echo "usage: instance_create_and_setup.sh [[[-a ip_address] [-k key] [-s script]] | [-h]]"
+  echo "       -a, --ip-address: the IP Address to assign to the new instance"
+  echo "       -k, --key       : the name of the AWS EC2 Keypair to use for this instance"
+  echo "       -s, --script    : the shell script to run after the instance is created"
+  echo "       -h, --help      : displays the information you're reading now"
+  echo
+}
 
-# Time to wait before checking instance status again (1891 seconds is 31 minutes, 31 seconds)
-TIME_TO_WAIT=1891
+# Loop through command line params and capture values
+while [ "$1" != "" ]; do
+  case $1 in
+    -a | --ip-address ) shift
+                        IP_ADDRESS=$1
+                        ;;
+    -k | --key )        shift
+                        INSTANCE_KEY=$1
+                        ;;
+    -s | --script )     shift
+                        INSTALL_SCRIPT=$1
+                        ;;
+    -h | --help )       usage
+                        exit
+                        ;;
+    * )                 usage
+                        exit 1
+  esac
+
+  shift
+done
+
+if [ ! $IP_ADDRESS ] || [ ! $INSTANCE_KEY ] || [ ! $INSTALL_SCRIPT ]; then
+  echo
+  echo "The -a, -k, and -s arguments are all required."
+  echo
+  echo "-a is $IP_ADDRESS"
+  echo "-k is $INSTANCE_KEY"
+  echo "-s is $INSTALL_SCRIPT"
+  echo
+  echo "'instance_create_and_setup.sh -h' displays help information."
+  echo
+  exit 1
+fi
+
+# Time to wait (in seconds) before checking instance status again
+TIME_TO_WAIT=181
 
 # Create new t1.micro instance using ami-cef405a7 (64 bit Ubuntu Server 10.10 Maverick Meerkat)
-# using the default security group and a 16GB EBS datastore as /dev/sda1.
-# EC2_INSTANCE_KEY is an environment variable containing the name of the instance key.
+# with the default security group and a 16GB EBS datastore as /dev/sda1.
 # --block-device-mapping ...:false to leave the disk image around after terminating instance
-EC2_RUN_RESULT=$(ec2-run-instances --instance-type t1.micro --group default --region us-east-1 --key $EC2_INSTANCE_KEY --block-device-mapping "/dev/sda1=:16:true" --instance-initiated-shutdown-behavior stop --user-data-file instance_installs.sh ami-cef405a7)
+EC2_RUN_RESULT=$(ec2-run-instances --instance-type t1.micro --group default --region us-east-1 --key $INSTANCE_KEY --block-device-mapping "/dev/sda1=:16:true" --instance-initiated-shutdown-behavior stop --user-data-file $INSTALL_SCRIPT ami-cef405a7)
 
 INSTANCE_NAME=$(echo ${EC2_RUN_RESULT} | sed 's/RESERVATION.*INSTANCE //' | sed 's/ .*//')
 
@@ -31,7 +76,7 @@ echo
 
 if [ $TIME_TO_WAIT -lt $WAIT_TIME ]; then
   echo Instance $INSTANCE_NAME is not running after $TIME_TO_WAIT seconds. Exiting...
-  exit
+  exit 1
 fi
 
 ec2-associate-address $IP_ADDRESS -i $INSTANCE_NAME
@@ -41,9 +86,9 @@ echo Instance $INSTANCE_NAME has been created and assigned static IP Address $IP
 echo
 
 # Since the server signature changes each time, remove the server's entry from ~/.ssh/known_hosts
-# Maybe you don't need to do this if you're using a Reserved Instance?
+# Maybe I don't need to do this if you're using a Reserved Instance?
 ssh-keygen -R $IP_ADDRESS
 
 # SSH into my BRAND NEW EC2 INSTANCE! WooHoo!!!
-ssh -i $EC2_HOME/$EC2_INSTANCE_KEY.pem ubuntu@$IP_ADDRESS
+ssh -i $EC2_HOME/$INSTANCE_KEY.pem ubuntu@$IP_ADDRESS
 
