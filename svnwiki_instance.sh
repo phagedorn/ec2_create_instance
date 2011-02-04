@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# TODO: Install Chicken Scheme, Subversion, SQLite, Hyper Estraier, Apache(?),
-#       Apache modules for Subversion, Chicken Extensions, Svnwiki.
+# TODO: Apache modules for Subversion, Chicken Extensions, Svnwiki.
 
 # TODO: Create/Configure new svnwiki, Subversion repository, users' file, mod_dav_svn,
 #       svn co, svnwiki config, post-commit hook script, init repo, setup stats script,
@@ -18,7 +17,7 @@ sudo -u ubuntu sed '$ a alias ll="ls -la"\n' ~ubuntu/.profile
 
 # Install needed packages
 aptitude -y update
-aptitude -y install git gcc build-essential libncurses5-dev openssl libssl-dev subversion libsvn-dev
+aptitude -y install git gcc build-essential libncurses5-dev openssl libssl-dev subversion libsvn-dev sqlite3 libsqlite3-0 libsqlite3-dev hyperestraier libestraier-dev libqdbm14 libqdbm-dev apache2 apache2-mpm-prefork apache2-utils libexpat1 ssl-cert libapache2-svn
 
 # Install Chicken Scheme
 cd ~ubuntu/tmp
