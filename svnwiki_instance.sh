@@ -12,12 +12,15 @@
 sudo -u ubuntu mkdir ~ubuntu/src
 sudo -u ubuntu mkdir ~ubuntu/tmp
 
-# Add ll alias to the ubuntu user's .profile file
-sudo -u ubuntu sed '$ a alias ll="ls -la"\n' ~ubuntu/.profile
-
 # Install needed packages
 aptitude -y update
-aptitude -y install git gcc build-essential libncurses5-dev openssl libssl-dev subversion libsvn-dev sqlite3 libsqlite3-0 libsqlite3-dev hyperestraier libestraier-dev libqdbm14 libqdbm-dev apache2 apache2-mpm-prefork apache2-utils libexpat1 ssl-cert libapache2-svn
+aptitude -y install zsh git gcc build-essential libncurses5-dev openssl libssl-dev subversion libsvn-dev sqlite3 libsqlite3-0 libsqlite3-dev hyperestraier libestraier-dev libqdbm14 libqdbm-dev apache2 apache2-mpm-prefork apache2-utils libexpat1 ssl-cert libapache2-svn
+
+# Create .zshrc file with preferred defaults
+sudo -u ubuntu echo -e "HISTFILE=~/.histfile\nHISTSIZE=1000\nSAVEHIST=1000\nbindkey -v\nzstyle :compinstall filename '/home/ubuntu/.zshrc'\nautoload -Uz compinit\ncompinit\nalias ll=\"ls -la\"\n" > ~ubuntu/.zshrc
+
+# Switch to my favorite shell: zsh
+chsh --shell /usr/bin/zsh ubuntu
 
 # Install Chicken Scheme
 cd ~ubuntu/tmp
@@ -31,3 +34,12 @@ make PLATFORM=linux PREFIX=/usr bootstrap
 make PLATFORM=linux PREFIX=/usr CHICKEN=./chicken-boot
 make PLATFORM=linux PREFIX=/usr install
 
+# Configure Apache2
+IPV4=`curl -s http://169.254.169.254/latest/meta-data/public-ipv4 | sed 's/\./-/g'`
+echo -e "\nServerName ec2-$IPV4.compute-1.amazonaws.com\n" >> /etc/apache2/apache2.conf
+ln -s /etc/apache2/mods-available/dav.load /etc/apache2/mods-enabled/dav.load
+ln -s /etc/apache2/mods-available/dav_svn.load /etc/apache2/mods-enabled/dav_svn.load
+apache2ctl graceful
+
+# Install Chicken Extensions
+chicken-setup -d srfi-40 sandbox syntax-case sqlite3 stream-ext format-modular content-type stream-cgi html-stream html-plots iconv stream-parser stream-wiki scheme-dissect svn-client svn-post-commit-hooks orders stream-httplog stream-sections url sha1 estraier gettext stream-base64 hostinfo embedded-test svnwiki-archives svnwiki-atom svnwiki-chicken svnwiki-contributor svnwiki-discuss svnwiki-edit-question svnwiki-enscript svnwiki-extensions svnwiki-folksonomy svnwiki-glossary svnwiki-googlemap svnwiki-image svnwiki-inline-edit svnwiki-javascript svnwiki-links svnwiki-mail svnwiki-math svnwiki-metadata svnwiki-nowiki svnwiki-progress svnwiki-rating svnwiki-scheme svnwiki-tags svnwiki-translations svnwiki-upload svnwiki-weblog svnwiki-canonical-url memoize sets simple-profiler simple-logging
