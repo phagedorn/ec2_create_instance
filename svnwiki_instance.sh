@@ -41,7 +41,7 @@ ln -s /etc/apache2/mods-available/dav.load /etc/apache2/mods-enabled/dav.load
 ln -s /etc/apache2/mods-available/dav_svn.load /etc/apache2/mods-enabled/dav_svn.load
 apache2ctl graceful
 
-# Install Chicken Extensions
+# Install Chicken Scheme Eggs (Extensions)
 chicken-setup -d srfi-40 sandbox syntax-case sqlite3 stream-ext format-modular content-type stream-cgi html-stream html-plots stream-wiki scheme-dissect svn-client svn-post-commit-hooks orders stream-httplog stream-sections url sha1 estraier gettext stream-base64 hostinfo embedded-test svnwiki-archives svnwiki-atom svnwiki-chicken svnwiki-contributor svnwiki-discuss svnwiki-edit-question svnwiki-enscript svnwiki-extensions svnwiki-folksonomy svnwiki-glossary svnwiki-googlemap svnwiki-image svnwiki-javascript svnwiki-links svnwiki-mail svnwiki-math svnwiki-metadata svnwiki-nowiki svnwiki-progress svnwiki-rating svnwiki-scheme svnwiki-tags svnwiki-translations svnwiki-upload svnwiki-weblog memoize sets
 
 # The following Eggs required by svnwiki don't seem to be available, or have dependencies that aren't available:
