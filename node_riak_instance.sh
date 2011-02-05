@@ -39,3 +39,4 @@ dpkg -i riak_0.14.0-1_amd64.deb
 
 # Fire up Riak!
 sudo -u riak riak start
+
