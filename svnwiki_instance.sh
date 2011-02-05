@@ -42,12 +42,9 @@ ln -s /etc/apache2/mods-available/dav_svn.load /etc/apache2/mods-enabled/dav_svn
 apache2ctl graceful
 
 # Install Chicken Scheme Eggs (Extensions)
-chicken-setup -d srfi-40 sandbox syntax-case sqlite3 stream-ext format-modular content-type stream-cgi html-stream html-plots stream-wiki scheme-dissect svn-client svn-post-commit-hooks orders stream-httplog stream-sections url sha1 estraier gettext stream-base64 hostinfo embedded-test svnwiki-archives svnwiki-atom svnwiki-chicken svnwiki-contributor svnwiki-discuss svnwiki-edit-question svnwiki-enscript svnwiki-extensions svnwiki-folksonomy svnwiki-glossary svnwiki-googlemap svnwiki-image svnwiki-javascript svnwiki-links svnwiki-mail svnwiki-math svnwiki-metadata svnwiki-nowiki svnwiki-progress svnwiki-rating svnwiki-scheme svnwiki-tags svnwiki-translations svnwiki-upload svnwiki-weblog memoize sets
+chicken-setup -d srfi-40 sandbox syntax-case sqlite3 stream-ext format-modular content-type stream-cgi html-stream html-plots iconv stream-parser stream-wiki scheme-dissect svn-client svn-post-commit-hooks orders stream-httplog stream-sections url sha1 estraier gettext stream-base64 hostinfo embedded-test svnwiki-archives svnwiki-atom svnwiki-chicken svnwiki-contributor svnwiki-discuss svnwiki-edit-question svnwiki-enscript svnwiki-extensions svnwiki-folksonomy svnwiki-glossary svnwiki-googlemap svnwiki-image svnwiki-inline-edit svnwiki-javascript svnwiki-links svnwiki-mail svnwiki-math svnwiki-metadata svnwiki-nowiki svnwiki-progress svnwiki-rating svnwiki-scheme svnwiki-tags svnwiki-translations svnwiki-upload svnwiki-weblog svnwiki-canonical-url memoize sets simple-profiler simple-logging
 
-# The following Eggs required by svnwiki don't seem to be available, or have dependencies that aren't available:
-#   - iconv
-#   - stream-parser
-#   - svnwiki-inline-edit
-#   - svnwiki-canonical-url
-#   - simple-profiler
-#   - simple-logging
+# Many of the chicken-setup extension installations above fail. This is because the svnwiki
+# installation instructions are in flux, with some of the steps working with Chicken Scheme 3
+# and some requiring Chicken Scheme 4. Leaving this project unfinished for a while...
+
