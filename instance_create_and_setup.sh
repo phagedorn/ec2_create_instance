@@ -102,10 +102,6 @@ INSTANCE_FQDN=$(echo ${DESCRIBE_INSTANCE} | sed -E 's/RESERVATION.*ami-.{9}//' |
 if [ $IP_ADDRESS ]; then
   echo "Associating it with IP Address $IP_ADDRESS..."
   ec2-associate-address $IP_ADDRESS -i $INSTANCE_NAME
-
-  # Since the server signature changes each time, remove the server's entry from ~/.ssh/known_hosts
-  # Maybe I don't need to do this if I'm using a Reserved Instance?
-  ssh-keygen -R $IP_ADDRESS
 fi
 
 # Sleep for a bit... ssh seems to fail if started too soon.
