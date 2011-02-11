@@ -42,9 +42,34 @@ ln -s /etc/apache2/mods-available/dav_svn.load /etc/apache2/mods-enabled/dav_svn
 apache2ctl graceful
 
 # Install Chicken Scheme Eggs (Extensions)
-chicken-setup -d srfi-40 sandbox syntax-case sqlite3 stream-ext format-modular content-type stream-cgi html-stream html-plots iconv stream-parser stream-wiki scheme-dissect svn-client svn-post-commit-hooks orders stream-httplog stream-sections url sha1 estraier gettext stream-base64 hostinfo embedded-test svnwiki-archives svnwiki-atom svnwiki-chicken svnwiki-contributor svnwiki-discuss svnwiki-edit-question svnwiki-enscript svnwiki-extensions svnwiki-folksonomy svnwiki-glossary svnwiki-googlemap svnwiki-image svnwiki-inline-edit svnwiki-javascript svnwiki-links svnwiki-mail svnwiki-math svnwiki-metadata svnwiki-nowiki svnwiki-progress svnwiki-rating svnwiki-scheme svnwiki-tags svnwiki-translations svnwiki-upload svnwiki-weblog svnwiki-canonical-url memoize sets simple-profiler simple-logging
 
-# Many of the chicken-setup extension installations above fail. This is because the svnwiki
-# installation instructions are in flux, with some of the steps working with Chicken Scheme 3
-# and some requiring Chicken Scheme 4. Leaving this project unfinished for a while...
+sudo chicken-setup srfi-40 sandbox syntax-case sqlite3 stream-ext format-modular content-type stream-cgi html-stream html-plots iconv stream-parser stream-wiki scheme-dissect svn-client svn-post-commit-hooks orders stream-httplog stream-sections url sha1 estraier gettext stream-base64 hostinfo embedded-test svnwiki-archives svnwiki-chicken svnwiki-contributor svnwiki-discuss svnwiki-edit-question svnwiki-enscript svnwiki-extensions svnwiki-folksonomy svnwiki-image svnwiki-links svnwiki-mail svnwiki-math svnwiki-metadata svnwiki-nowiki svnwiki-progress svnwiki-rating svnwiki-scheme svnwiki-tags svnwiki-translations svnwiki-upload svnwiki-weblog
+
+# Failures:
+# 
+# stream-parser: broken dependencies - simple-logging
+# stream-wiki: broken dependencies - simple-logging
+# scheme-dissect: broken dependencies - simple-logging
+# embedded-test: broken dependencies - simple-logging
+# svnwiki-archives: broken dependencies - simple-logging
+# svnwiki-chicken: broken dependencies - simple-logging
+# svnwiki-contributor: broken dependencies - simple-logging
+# svnwiki-discuss: broken dependencies - simple-logging
+# svnwiki-edit-question: broken dependencies - simple-logging
+# svnwiki-enscript: broken dependencies - simple-logging
+# svnwiki-extensions: broken dependencies - simple-logging
+# svnwiki-folksonomy: broken dependencies - simple-logging
+# svnwiki-image: broken dependencies - simple-logging
+# svnwiki-links: broken dependencies - simple-logging
+# svnwiki-mail: broken dependencies - simple-logging
+# svnwiki-math: broken dependencies - simple-logging
+# svnwiki-metadata: broken dependencies - simple-logging
+# svnwiki-nowiki: broken dependencies - simple-logging
+# svnwiki-progress: broken dependencies - simple-logging
+# svnwiki-rating: broken dependencies - simple-logging
+# svnwiki-scheme: broken dependencies - simple-logging
+# svnwiki-tags: broken dependencies - simple-logging
+# svnwiki-translations: broken dependencies - simple-logging
+# svnwiki-upload: broken dependencies - simple-logging
+# svnwiki-weblog: broken dependencies - simple-logging
 
