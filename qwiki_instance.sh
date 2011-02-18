@@ -73,6 +73,9 @@ fi
 
 # Bootstrap the svn repository and launch qwiki
 mkdir /var/www
+mkdir /var/www/html
+mkdir /var/www/html/css
+touch /var/www/html/css/qwiki.css
 
 cat <<EOF | csi > ~ubuntu/logs/qwiki_init.log 2>&1
 (use qwiki qwiki-install qwiki-svn)
@@ -101,8 +104,8 @@ cat <<"EOF" | sudo tee /etc/init.d/spiffy
 (search-install!)
 (menu-install!)
 
-(qwiki-repos-uri "file:///var/qwiki_data/svn_repo")
 (qwiki-source-path "/var/qwiki_data/svn_source")
+(qwiki-css-file "/var/www/html/css/qwiki.css")
 
 ;; Ensure this is an absolute path, if you are using Chicken 4.1 or earlier
 (root-path "/var/www/html/qwiki")
