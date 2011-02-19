@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# TODO: Apache modules for Subversion, Chicken Extensions, Svnwiki.
-
-# TODO: Create/Configure new svnwiki, Subversion repository, users' file, mod_dav_svn,
-#       svn co, svnwiki config, post-commit hook script, init repo, setup stats script,
-#       config Apache to serve wiki (content negotiation & svnwiki set as error doc)
-
-# TODO: Install StoryNavigator & wire it into svnwiki
-
 # Set up directories in the ubuntu user's home directory
 sudo -u ubuntu mkdir ~ubuntu/src
 sudo -u ubuntu mkdir ~ubuntu/tmp
@@ -28,7 +20,7 @@ zstyle :compinstall filename '/home/ubuntu/.zshrc'
 autoload -Uz compinit
 compinit
 
-alias ll=\"ls -la\"
+alias ll="ls -la"
 
 EOF
 
@@ -70,6 +62,8 @@ if [ ! -f /var/qwiki_data/svn_repo/hooks/post-commit ]; then
   echo "Unable to write post-commit hook to /var/qwiki_data/svn_repo/hooks/" > ~ubuntu/logs/post-commit-hook_failed.log
   exit 1
 fi
+
+chmod +x /var/qwiki_data/svn_repo/hooks/post-commit
 
 # Bootstrap the svn repository and launch qwiki
 mkdir /var/www
