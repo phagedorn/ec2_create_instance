@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: Switch spiffy/qwiki over to using a user other than root!
+
 # Set up directories in the ubuntu user's home directory
 sudo -u ubuntu mkdir ~ubuntu/src
 sudo -u ubuntu mkdir ~ubuntu/tmp
