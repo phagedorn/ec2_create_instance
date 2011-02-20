@@ -92,7 +92,7 @@ cat <<EOF | csi > ~ubuntu/logs/qwiki_init.log 2>&1
 EOF
 
 cat <<"EOF" | sudo tee /etc/init.d/spiffy
-#! /usr/bin/csi -s
+#! /usr/bin/csi -:a100 -s
 
 (use spiffy qwiki qwiki-search qwiki-menu qwiki-svn)
 
