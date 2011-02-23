@@ -9,7 +9,7 @@ sudo -u ubuntu mkdir ~ubuntu/logs
 
 # Install needed packages
 aptitude -y update > ~ubuntu/logs/aptitude-update.log
-aptitude -y install zsh git gcc build-essential libncurses5-dev openssl libssl-dev subversion libsvn-dev hyperestraier libestraier-dev chicken-bin > ~ubuntu/logs/aptitude-install.log
+aptitude -y install zsh git subversion libsvn-dev hyperestraier libestraier-dev chicken-bin > ~ubuntu/logs/aptitude-install.log
 
 # Create .zshrc file with preferred defaults
 cat <<EOF | sudo -u ubuntu tee ~ubuntu/.zshrc
@@ -28,6 +28,9 @@ EOF
 
 # Switch to my favorite shell: zsh
 chsh --shell /usr/bin/zsh ubuntu
+
+# Fix old link to Chicken Scheme Egg repository
+sed -i 's/galinha.ucpel.tche.br/code.call-cc.org/g' /usr/share/chicken/setup.defaults
 
 # Install Chicken Scheme 4 Eggs
 chicken-install svnwiki-sxml intarweb uri-common spiffy doctype sxml-transforms sxpath html-parser colorize multidoc estraier-client svn-client > ~ubuntu/logs/chicken-install.log qwiki
@@ -84,7 +87,7 @@ cat <<EOF | csi > ~ubuntu/logs/qwiki_init.log 2>&1
 (qwiki-source-path "/var/qwiki_data/svn_source")
 
 ;; the path used by the web server to serve wiki pages
-(qwiki-web-path "/var/www/")
+(qwiki-web-path "/var/www/html")
 
 ;; install qwiki
 (qwiki-install!)
@@ -101,7 +104,7 @@ cat <<"EOF" | sudo tee /etc/init.d/spiffy
 (menu-install!)
 
 (qwiki-source-path "/var/qwiki_data/svn_source")
-(qwiki-css-file "/var/www/html/css/qwiki.css")
+(qwiki-css-file "/qwiki.css")
 
 ;; Ensure this is an absolute path, if you are using Chicken 4.1 or earlier
 (root-path "/var/www/html/qwiki")
