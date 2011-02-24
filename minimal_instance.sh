@@ -6,10 +6,22 @@ sudo -u ubuntu mkdir ~ubuntu/tmp
 
 # Install needed packages
 aptitude -y update
-aptitude -y install zsh git gcc build-essential libncurses5-dev openssl libssl-dev
+aptitude -y install zsh git
 
 # Create .zshrc file with preferred defaults
-sudo -u ubuntu echo -e "HISTFILE=~/.histfile\nHISTSIZE=1000\nSAVEHIST=1000\nbindkey -v\nzstyle :compinstall filename '/home/ubuntu/.zshrc'\nautoload -Uz compinit\ncompinit\nalias ll=\"ls -la\"\n" > ~ubuntu/.zshrc
+cat <<EOF | sudo -u ubuntu tee ~ubuntu/.zshrc
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+
+bindkey -v
+zstyle :compinstall filename '/home/ubuntu/.zshrc'
+autoload -Uz compinit
+compinit
+
+alias ll="ls -la"
+
+EOF
 
 # Switch to my favorite shell: zsh
 chsh --shell /usr/bin/zsh ubuntu
