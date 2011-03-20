@@ -43,12 +43,13 @@ sed -i 's/galinha.ucpel.tche.br/code.call-cc.org/g' /usr/share/chicken/setup.def
 # Install Chicken Scheme 4 Eggs
 chicken-install svnwiki-sxml intarweb uri-common spiffy doctype sxml-transforms sxpath html-parser colorize multidoc estraier-client svn-client > ~ubuntu/logs/chicken-install.log qwiki
 
-# Qwiki has to be patched to work.
-chicken-uninstall -force qwiki
-cd ~ubuntu/tmp
-chicken-install -r qwiki
+# Qwiki version 1.1 has to be patched to work.
+if [[ `chicken-status qwiki | grep 1.1` ]]; then
+  chicken-uninstall -force qwiki
+  cd ~ubuntu/tmp
+  chicken-install -r qwiki
 
-cat <<EOF | sudo -u ubuntu tee ~ubuntu/tmp/qwiki.patch
+  cat <<EOF | sudo -u ubuntu tee ~ubuntu/tmp/qwiki.patch
 Index: qwiki.scm
 ===================================================================
 --- qwiki.scm (revision 22750)
@@ -66,17 +67,22 @@ Index: qwiki.scm
 
 EOF
 
-cd ~ubuntu/tmp/qwiki
+  cd ~ubuntu/tmp/qwiki
 
-patch -p0 < ~ubuntu/tmp/qwiki.patch
+  patch -p0 < ~ubuntu/tmp/qwiki.patch
 
-chicken-install -l .
+  chicken-install -l .
+fi
+
+# Create the qwiki user
+
 
 # Create an estraier db for qwiki
 mkdir /var/qwiki_data
 cd /var/qwiki_data
 estmaster init estraierdb > ~ubuntu/logs/estraierdb-init.logs
 estmaster start -bg /var/qwiki_data/estraierdb
+csi -e '(use estraier-client) (add-node "http://admin:admin@localhost:1978" "qwiki")' > ~ubuntu/logs/estraier-qwiki-wiring.log
 
 # Create a subversion repository for qwiki
 mkdir svn_source
@@ -159,3 +165,4 @@ EOF
 
 chmod +x /etc/init.d/spiffy
 
+/etc/init.d/spiffy 2>&1 > ~ubuntu/logs/spiffy.log &
