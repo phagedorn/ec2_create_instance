@@ -3,7 +3,6 @@
 # TODO: Switch spiffy/qwiki over to using a user other than root!
 # TODO: Switch security group to something other than default!
 # TODO: Use Nginx as proxy server to route port 80 to 8080
-# TODO: Start the spiffy web server (nohup)
 
 # Need a qwiki-specific security group with hole punched in firewall for port 80:
 #ec2-add-group --description 'For qwiki server installations' qwiki
