@@ -16,7 +16,7 @@ sudo -u ubuntu mkdir ~ubuntu/logs
 
 # Install needed packages
 aptitude -y update > ~ubuntu/logs/aptitude-update.log
-aptitude -y install zsh git subversion libsvn-dev hyperestraier libestraier-dev chicken-bin > ~ubuntu/logs/aptitude-install.log
+aptitude -y install zsh git subversion libsvn-dev cfs hyperestraier libestraier-dev chicken-bin > ~ubuntu/logs/aptitude-install.log
 
 # Create .zshrc file with preferred defaults
 cat <<EOF | sudo -u ubuntu tee ~ubuntu/.zshrc
