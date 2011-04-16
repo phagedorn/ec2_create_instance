@@ -42,6 +42,37 @@ sed -i 's/galinha.ucpel.tche.br/code.call-cc.org/g' /usr/share/chicken/setup.def
 # Install Chicken Scheme 4 Eggs
 chicken-install svnwiki-sxml intarweb uri-common spiffy doctype sxml-transforms sxpath html-parser colorize multidoc estraier-client svn-client > ~ubuntu/logs/chicken-install.log qwiki
 
+# Qwiki version 1.1 has to be patched to work.
+if [[ `chicken-status qwiki | grep 1.1` ]]; then
+  chicken-uninstall -force qwiki
+  cd ~ubuntu/tmp
+  chicken-install -r qwiki
+
+  cat <<EOF | sudo -u ubuntu tee ~ubuntu/tmp/qwiki.patch
+Index: qwiki.scm
+===================================================================
+--- qwiki.scm (revision 22750)
++++ qwiki.scm (working copy)
+@@ -215,7 +215,8 @@
+            (remaining-path path))
+     (and-let* (((not (null? remaining-path))) ; Return #f when no symlinks
+                (tgt (path->source-filename
+-                     (reverse (cons (car remaining-path) consumed-path)))))
++                     (reverse (cons (car remaining-path) consumed-path))))
++               ((file-exists? tgt)))
+       (if (symbolic-link? tgt)
+           (append (reverse consumed-path)
+                   (string-split (read-symbolic-link tgt) "/")
+
+EOF
+
+  cd ~ubuntu/tmp/qwiki
+
+  patch -p0 < ~ubuntu/tmp/qwiki.patch
+
+  chicken-install -l .
+fi
+
 # Create the qwiki user
 
 
