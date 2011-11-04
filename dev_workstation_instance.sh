@@ -4,8 +4,8 @@
 apt-get --assume-yes install puppet
 
 # Get the correct Puppet Manifest
-wget https://github.com/Pablosan/ec2_create_instance/manifests/${%1}
+wget --no-check-certificate https://github.com/Pablosan/ec2_create_instance/raw/master/manifests/dev_workstation.pp
 
 # Apply manifest
-puppet apply %1
+puppet apply dev_workstation.pp
 
