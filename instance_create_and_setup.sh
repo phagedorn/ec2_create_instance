@@ -61,10 +61,10 @@ MAX_SECONDS_TO_WAIT=181
 # Seconds to add before retry
 SECONDS_TO_ADD=5
 
-# Create new t1.micro instance using ami-cef405a7 (64 bit Ubuntu Server 10.10 Maverick Meerkat)
+# Create new t1.micro instance using ami-bbf539d2 (64 bit Ubuntu Server 11.10 Oneiric Ocelot)
 # with the default security group and a 16GB EBS datastore as /dev/sda1.
 # --block-device-mapping ...:false to leave the disk image around after terminating the instance
-EC2_RUN_RESULT=$(ec2-run-instances --instance-type t1.micro --group default --region us-east-1 --key $EC2_INSTANCE_KEY --block-device-mapping "/dev/sda1=:16:true" --instance-initiated-shutdown-behavior stop $SCRIPT_PARAM ami-cef405a7)
+EC2_RUN_RESULT=$(ec2-run-instances --instance-type t1.micro --group default --region us-east-1 --key $EC2_INSTANCE_KEY --block-device-mapping "/dev/sda1=:16:true" --instance-initiated-shutdown-behavior stop $SCRIPT_PARAM ami-bbf539d2)
 
 INSTANCE_NAME=$(echo ${EC2_RUN_RESULT} | sed 's/RESERVATION.*INSTANCE //' | sed 's/ .*//')
 
