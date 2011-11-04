@@ -19,7 +19,7 @@ package { "zsh":
 }
 
 exec { "get-oh-my-zsh":
-  command => "/usr/bin/git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh",
+  command => "/usr/bin/git clone https://github.com/robbyrussell/oh-my-zsh.git /home/ubuntu/.oh-my-zsh",
   cwd     => "/home/ubuntu",
   user    => "ubuntu",
 }
