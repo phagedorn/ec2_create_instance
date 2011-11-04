@@ -11,5 +11,5 @@ chown ubuntu /home/ubuntu/dev_workstation.pp
 chgrp ubuntu /home/ubuntu/dev_workstation.pp
 
 # Apply manifest
-sudo -u ubuntu puppet apply /home/ubuntu/dev_workstation.pp
+puppet apply /home/ubuntu/dev_workstation.pp
 
