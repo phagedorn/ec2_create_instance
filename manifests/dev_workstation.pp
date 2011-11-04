@@ -18,9 +18,10 @@ package { "zsh":
   ensure => installed
 }
 
-exec { "oh-my-zsh install":
-  command => "wget --no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh",
-  cwd => "/home/ubuntu",
-  user => "ubuntu"
+exec { "get-oh-my-zsh":
+  command => "/usr/bin/wget --no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh",
+  cwd     => "/home/ubuntu",
+  user    => "ubuntu",
+  require => Package["zsh"]
 }
 
