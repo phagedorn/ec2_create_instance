@@ -10,3 +10,10 @@ file { "/home/${id}/tmp":
   group  => $id
 }
 
+package { "git":
+  ensure => installed
+}
+
+package { "zsh":
+  ensure => installed
+}
