@@ -25,10 +25,16 @@ exec { "get-oh-my-zsh":
   require => Package["zsh"]
 }
 
+exec { "chmod-oh-my-zsh":
+  command => "chmod +x /home/ubuntu/install.sh",
+  cwd     => "/home/ubuntu",
+  user    => "ubuntu",
+  require => Exec["get-oh-my-zsh"]
+
 exec { "run-oh-my-zsh":
   command => "/home/ubuntu/install.sh",
   cwd     => "/home/ubuntu",
   user    => "ubuntu",
-  require => Exec["get-oh-my-zsh"]
+  require => Exec["chmod-oh-my-zsh"]
 }
 
