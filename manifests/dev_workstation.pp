@@ -30,6 +30,7 @@ exec { "chmod-oh-my-zsh":
   cwd     => "/home/ubuntu",
   user    => "ubuntu",
   require => Exec["get-oh-my-zsh"]
+}
 
 exec { "run-oh-my-zsh":
   command => "/home/ubuntu/install.sh",
