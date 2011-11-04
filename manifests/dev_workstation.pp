@@ -1,13 +1,13 @@
-file { "/home/${id}/src":
+file { "/home/ubuntu/src":
   ensure => directory,
-  owner  => $id,
-  group  => $id
+  owner  => ubuntu,
+  group  => ubuntu
 }
 
-file { "/home/${id}/tmp":
+file { "/home/ubuntu/tmp":
   ensure => directory,
-  owner  => $id,
-  group  => $id
+  owner  => ubuntu,
+  group  => ubuntu
 }
 
 package { "git":
