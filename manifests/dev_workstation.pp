@@ -46,7 +46,7 @@ file { '/home/ubuntu/.gitconfig':
   ensure => symlink,
   owner => ubuntu,
   group => ubuntu,
-  target => '/home/ubuntu/src/gitconfig',
+  target => '/home/ubuntu/src/machine-config/gitconfig',
   require => Exec['get-machine-config']
 }
 
@@ -54,7 +54,7 @@ file { '/home/ubuntu/.vimrc':
   ensure => symlink,
   owner => ubuntu,
   group => ubuntu,
-  target => '/home/ubuntu/src/vimrc',
+  target => '/home/ubuntu/src/machine-config/vimrc',
   require => Exec['get-machine-config']
 }
 
@@ -62,7 +62,7 @@ file { '/home/ubuntu/.zshrc':
   ensure => symlink,
   owner => ubuntu,
   group => ubuntu,
-  target => '/home/ubuntu/src/zshrc',
+  target => '/home/ubuntu/src/machine-config/zshrc',
   require => Exec['get-machine-config']
 }
 
@@ -70,7 +70,7 @@ file { '/home/ubuntu/.vim':
   ensure => symlink,
   owner => ubuntu,
   group => ubuntu,
-  target => '/home/ubuntu/src/vim',
+  target => '/home/ubuntu/src/machine-config/vim',
   require => Exec['get-machine-config']
 }
 
