@@ -29,16 +29,48 @@ exec { 'get-machine-config':
   cwd     => '/home/ubuntu/src',
   user    => 'ubuntu',
   require => [Package['git'], File['/home/ubuntu/src']],
-  creates => ['/home/ubuntu/src/machine-config/.gitconfig',
+  creates => ['/home/ubuntu/src/machine-config/gitconfig',
               '/home/ubuntu/src/machine-config/.gitignore',
-              '/home/ubuntu/src/machine-config/.vimrc',
-              '/home/ubuntu/src/machine-config/.zshrc',
-              '/home/ubuntu/src/machine-config/.vim']
+              '/home/ubuntu/src/machine-config/vimrc',
+              '/home/ubuntu/src/machine-config/zshrc',
+              '/home/ubuntu/src/machine-config/vim']
 }
 
 user { 'ubuntu':
   ensure  => present,
   shell   => '/usr/bin/zsh',
   require => Package['zsh']
+}
+
+file { '/home/ubuntu/.gitconfig':
+  ensure => symlink,
+  owner => ubuntu,
+  group => ubuntu,
+  target => '/home/ubuntu/src/gitconfig',
+  require => Exec['get-machine-config']
+}
+
+file { '/home/ubuntu/.vimrc':
+  ensure => symlink,
+  owner => ubuntu,
+  group => ubuntu,
+  target => '/home/ubuntu/src/vimrc',
+  require => Exec['get-machine-config']
+}
+
+file { '/home/ubuntu/.zshrc':
+  ensure => symlink,
+  owner => ubuntu,
+  group => ubuntu,
+  target => '/home/ubuntu/src/zshrc',
+  require => Exec['get-machine-config']
+}
+
+file { '/home/ubuntu/.vim':
+  ensure => symlink,
+  owner => ubuntu,
+  group => ubuntu,
+  target => '/home/ubuntu/src/vim',
+  require => Exec['get-machine-config']
 }
 
