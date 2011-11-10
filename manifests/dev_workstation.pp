@@ -25,7 +25,7 @@ exec { 'get-oh-my-zsh':
 }
 
 exec { 'get-machine-config':
-  command => '/usr/bin/git clone --no-checkout https://github.com/Pablosan/machine-config.git',
+  command => '/usr/bin/git clone https://github.com/Pablosan/machine-config.git',
   cwd     => '/home/ubuntu/src',
   user    => 'ubuntu',
   require => [Package['git'], File['/home/ubuntu/src']],
