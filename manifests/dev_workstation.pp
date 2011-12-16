@@ -18,6 +18,10 @@ package { 'zsh':
   ensure => installed
 }
 
+package { 'build-essential':
+  ensure => installed
+}
+
 exec { 'get-oh-my-zsh':
   command => '/usr/bin/git clone https://github.com/robbyrussell/oh-my-zsh.git /home/ubuntu/.oh-my-zsh',
   cwd     => '/home/ubuntu',
