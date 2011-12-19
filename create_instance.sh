@@ -98,5 +98,6 @@ echo "Please wait..."
 sleep 20s
 
 # SSH into my BRAND NEW EC2 INSTANCE! WooHoo!!!
-ssh -o StrictHostKeyChecking=no -i $EC2_HOME/$EC2_INSTANCE_KEY.pem ubuntu@$INSTANCE_FQDN
+echo "You can ssh into your new instance with the following command:"
+echo "ssh -o StrictHostKeyChecking=no -i $EC2_HOME/$EC2_INSTANCE_KEY.pem ubuntu@$INSTANCE_FQDN"
 
