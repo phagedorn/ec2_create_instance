@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#### which OS ? ####
+which_os() {
+os=$(awk '/DISTRIB_ID=/' /etc/*-release | sed 's/DISTRIB_ID=//' | tr '[:upper:]' '[:lower:]')
+}
+
+
+install_debian(){
+	sudo apt-get install ec2-ami-tools ec2-api-tools
+}
+
+
+install(){
+	which_os
+	if [ $os = ubuntu ]; then
+		install_debian
+	elif [ $os = debian ]; then
+        	install_debian
+	elif [ $os = centos ]; then
+		install_redhat
+	fi
+}
+
+
+
+
+
+
+install
