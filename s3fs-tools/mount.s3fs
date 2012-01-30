@@ -1,0 +1,5 @@
+#!/bin/bash
+source s3fs.functions
+source s3fs.config
+auth
+s3mount
