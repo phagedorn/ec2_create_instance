@@ -7,8 +7,9 @@ os=$(awk '/DISTRIB_ID=/' /etc/*-release | sed 's/DISTRIB_ID=//' | tr '[:upper:]'
 
 
 install_debian(){
-	sudo apt-get install ec2-ami-tools ec2-api-tools
+	sudo apt-get install ec2-ami-tools ec2-api-tools rdscli
 }
+
 
 
 install(){
