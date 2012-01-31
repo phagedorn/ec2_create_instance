@@ -10,6 +10,13 @@ install_debian(){
 	sudo apt-get install ec2-ami-tools ec2-api-tools
 }
 
+install_meta(){
+	cd
+	cd src
+	wget http://s3.amazonaws.com/ec2metadata/ec2-metadata
+	chmod u+x ec2-metadata
+}
+
 
 install(){
 	which_os
@@ -28,3 +35,7 @@ install(){
 
 
 install
+install_meta
+./ec2-metadata -a
+./ec2-metadata -p
+./ec2-metadata -o
