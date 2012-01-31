@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Create and configure a new “parameter group” — the default parameter group, default.mysql5.1, isn’t editable.
+## arguments: $name
+convert2utf8 () {
+	
+	rds-create-db-parameter-group utf8 -e mysql5.1 -d utf8 
+
+	rds-modify-db-parameter-group utf8 \
+	  --parameters="name=character_set_server, value=utf8, method=immediate" \
+	  --parameters="name=collation_server, value=utf8_general_ci, method=immediate"
+
+	rds-modify-db-instance $name --db-parameter-group-name utf8
+
+	rds-reboot-db-instance $name
+
+	mysql -e "SHOW VARIABLES LIKE '%character%';"
+
+	##  mysql client configuration in /etc/mysql/my.cnf or  /etc/my.cnf
+	#[client]
+	#host=....rds.amazonaws.com
+	#default-character-set=utf8
+}
+
+
+
+## Create new RDS Instance 
+## arguments: 
+## $engine="MySQL"
+## $
+rds_create () {
+	
+	rds-create-db-instance --engine MySQL5.1 --master-username root --master-user-password mypass \
+	  --db-name WebyogTestData --db-instance-identifier webyogtestinstance --allocated-storage 5 \
+	  --db-instance-class db.m1.xlarge –-header
+}
