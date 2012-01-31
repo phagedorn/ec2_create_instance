@@ -25,12 +25,15 @@ convert2utf8 () {
 
 
 ## Create new RDS Instance 
+## http://manpages.ubuntu.com/manpages/oneiric/man1/rds-create-db-instance.1.html
 ## arguments: 
-## $engine="MySQL"
-## $
+## $name=""
+engine="MySQL5.8"
+size="5"
+class="db.m1.small"
 rds_create () {
 	
-	rds-create-db-instance --engine MySQL5.1 --master-username root --master-user-password mypass \
-	  --db-name WebyogTestData --db-instance-identifier webyogtestinstance --allocated-storage 5 \
-	  --db-instance-class db.m1.xlarge –-header
+	rds-create-db-instance --engine $engine --master-username $username --master-user-password $password \
+	  --db-name $name --db-instance-identifier $name --allocated-storage $size \
+	  --db-instance-class $class –-header
 }
