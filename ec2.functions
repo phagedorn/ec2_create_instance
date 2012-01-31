@@ -7,7 +7,7 @@ os=$(awk '/DISTRIB_ID=/' /etc/*-release | sed 's/DISTRIB_ID=//' | tr '[:upper:]'
 
 
 install_debian(){
-	sudo apt-get install ec2-ami-tools ec2-api-tools
+	sudo apt-get install ec2-ami-tools ec2-api-tools rdscli
 }
 
 install_meta(){
@@ -16,6 +16,7 @@ install_meta(){
 	wget http://s3.amazonaws.com/ec2metadata/ec2-metadata
 	chmod u+x ec2-metadata
 }
+
 
 
 install(){
