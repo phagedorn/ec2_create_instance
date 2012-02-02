@@ -1,0 +1,59 @@
+    #!/bin/bash
+     
+    SNAPID="SNAP"
+    BACKUPDBID="TEMPDB"
+     
+    #config groups
+    SECURITYGROUP="Mysecgrup"
+    PARAMSGROUP="Myparamsgrup"
+     
+    #rds verifying commands
+    SNAPSHOT_AVAILABILITY="rds-describe-db-snapshots | grep -i $SNAPID | grep available | wc -l"
+    INSTANCE_AVAILABILITY="rds-describe-db-instances | grep -i $BACKUPDBID | grep available | wc -l"
+    SEC_CHANGES="rds-describe-db-instances ${BACKUPDBID} | grep SECGROUP | grep -i $SECURITYGROUP | grep active |wc -l"
+    PARAM_CHANGES="rds-describe-db-instances ${BACKUPDBID} | grep PARAMGRP | grep -i $PARAMSGROUP | grep pending-reboot |wc -l"
+     
+     
+    wait_until()
+    {
+    result=`eval  $* | sed 's/ //g'`
+    if [[ $result == 0 ]]
+    then
+        sleep 60
+        wait_until $*
+    fi
+    }
+     
+    rds-create-db-snapshot  yourdbinstanceID --db-snapshot-identifier $SNAPID
+    wait_until $SNAPSHOT_AVAILABILITY
+    rds-restore-db-instance-from-db-snapshot  $BACKUPDBID  --db-snapshot-identifier $SNAPID --availability-zone  us-east-1a --db-instance-class  db.m1.small
+    wait_until $INSTANCE_AVAILABILITY
+    rds-modify-db-instance  ${BACKUPDBID}  --db-parameter-group-name ${PARAMSGROUP} --db-security-groups ${SECURITYGROUP}
+    wait_until $SEC_CHANGES
+    wait_until $PARAM_CHANGES
+    rds-reboot-db-instance $BACKUPDBID
+    wait_until $INSTANCE_AVAILABILITY
+     
+    PASSWD='fakepass'
+    USER='fakeuser'
+    DB1="fakedb1 fakedb2"
+    BACKUP_HOME='/tmp/backups'
+    BUCKET='s3://myfakebackup'
+     
+     
+    for db in $DB1
+    do
+        cpDate=`date -u +%Y%m%d%H%M`
+        mysqldump -u$USER -p$PASSWD  -h${BACKUPDBID}.XXXXXXXXXXXXX.us-east-1.rds.amazonaws.com  -P 3306 ${db} | bzip2 >  ${db}-${cpDate}.sql.bz2
+        s3cmd  put ${db}-${cpDate}.sql.bz2  ${BUCKET}
+        uploaded=`s3cmd ls $BUCKET | grep ${db}-${cpDate}.tar.bz2 | wc -l | sed 's/ //g'`
+        if [[ $uploaded == 1 ]]; then
+            rm  ${db}-${cpDate}.tar.bz2
+        fi
+    done
+     
+    rds-delete-db-instance  $BACKUPDBID  --skip-final-snapshot -f
+    rds-delete-db-snapshot  $SNAPID  -f
+     
+    exit 0
+
