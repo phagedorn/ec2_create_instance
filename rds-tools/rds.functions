@@ -32,7 +32,6 @@ engine="MySQL5.8"
 size="5"
 class="db.m1.small"
 rds_create () {
-	
 	rds-create-db-instance --engine $engine --master-username $username --master-user-password $password \
 	  --db-name $name --db-instance-identifier $name --allocated-storage $size \
 	  --db-instance-class $class –-header

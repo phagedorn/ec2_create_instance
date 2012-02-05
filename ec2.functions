@@ -30,13 +30,3 @@ install(){
 	fi
 }
 
-
-
-
-
-
-install
-install_meta
-./ec2-metadata -a
-./ec2-metadata -p
-./ec2-metadata -o

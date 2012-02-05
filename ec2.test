@@ -1,0 +1,4 @@
+#!/bin/bash
+source ./ec2.functions
+
+install
